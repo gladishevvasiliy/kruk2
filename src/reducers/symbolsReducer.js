@@ -26,7 +26,7 @@ const initialState = {
   tones: [],
 }
 
-getDataFromServer('http://84.201.133.135/kruk/all').then(data => {
+getDataFromServer('https://84.201.133.135:8443/kruk/all').then(data => {
   initialState.symbols = data
 })
 

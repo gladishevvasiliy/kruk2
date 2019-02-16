@@ -15,7 +15,7 @@ export class PaperWrapper extends Component {
   }
 
   componentDidMount = () => {
-    getDataFromServer('http://84.201.133.135/kruk/all').then(data => {
+    getDataFromServer('https://84.201.133.135:8443/kruk/all').then(data => {
       const { actions } = this.props
       actions.setSymbols(data)
       this.setState({ isLoading: false })
