@@ -1,0 +1,377 @@
+@font-face {
+    font-family: Kruk;
+    src: url(../../res/fonts/Kruk-Kalashn-edit-VG.ttf);
+   }
+
+   @font-face {
+    font-family: NewDamaskin;
+    src: url(../../res/fonts/NewDamaskin.ttf);
+   }
+
+   @font-face {
+    font-family: Afonit;
+    src: url(../../res/fonts/afonit01-red-for-kruk.ttf);
+   }
+
+   @font-face {
+    font-family: GrebnevUCS;
+    src: url(../../res/fonts/GrebnevUCS.ttf)
+}
+
+
+.paperArea {
+    padding-top: 50px;
+    background-color: rgb(236, 236, 236);
+    padding-bottom: 50px;
+}
+.areaOfSymbols {
+    width: 900px;
+    /* width: 700px; */
+    /* min-height: 400px; */
+
+    /* border-top: 1px solid #d1d1d1;
+    border-left: 1px solid #d1d1d1;
+    border-right: 1px solid #d1d1d1; */
+}
+
+.paperMargin {
+    margin: 30px;
+    position: relative;
+}
+
+.paragraphWrapper {
+    position: relative;
+}
+
+.paragraph-remove-button {
+    position: absolute;
+    bottom: 7px;
+    cursor: pointer;
+    background-color: #fffc;
+    display: none;
+    color: #fff;
+    background-color: #dc354599;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    /* padding: .375rem .75rem; */
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    -webkit-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    -o-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+}
+
+.paragraphWrapper:hover .paragraph-remove-button {
+    display: inline-block;
+}
+
+.paragraph {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: solid 1px #fff;
+}
+
+.activeParagraph {
+    box-shadow: 0 0 0 1px rgba(0, 123, 255, 0.733);
+    border-radius: .25rem;
+}
+
+.paragraph:after {
+    content: "";
+    flex: auto;
+}
+
+.paragraph:hover {
+    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+    border-color: rgba(0, 123, 255, 0.733);
+    border-radius: .25rem;
+}
+
+.a4 {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    page-break-before: avoid;
+    page-break-after: avoid;
+    background: white;
+    margin-bottom: 50px;
+    border: solid 1px #e6e6e6;
+    padding: 5mm;
+}
+
+.a4:hover {
+    border-color: rgba(0, 123, 255, 0.733);
+    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+    border-radius: .25rem;
+}
+
+.paperMargin:hover .page-remove-button {
+    display: inline-block;
+}
+
+.activePage {
+    box-shadow: 0 0 0 1px rgba(0, 123, 255, 0.733);
+    border-radius: .25rem;
+}
+
+.page-remove-button {
+    position: absolute;
+    left: 40.5%;
+    top: 10px;
+    cursor: pointer;
+    display: none;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    /* padding: .375rem .75rem; */
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    -webkit-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    -o-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    z-index: 1040;
+}
+
+.droppable {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.syllable {
+    margin-bottom: 10px;
+    margin-right: 10px;
+    position: relative;
+}
+
+.syllable:hover .syllable-button {
+    display: inline-block;
+}
+
+.syllable:hover .fa {
+    display: block;
+}
+
+.text {
+    font-size: 30pt;
+    margin-left: 20px;
+    margin-top: 14px;
+    text-align: left;
+    font-family: NewDamaskin;
+    cursor: pointer;
+}
+
+.text:hover {
+    color:red;
+}
+
+.symbol {
+    font-family: "Kruk";
+}
+
+.red {
+    color: red;
+}
+.dop_pometa {
+    padding-left: 0.2em;
+}
+
+.syllable-button {
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    /* padding: .375rem .75rem; */
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    -webkit-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    -o-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+}
+
+.syllable-button > .fa{
+    display: none;
+}
+
+.repeat {
+    cursor: pointer;
+    background-color: #fffc;
+    position: absolute;
+    right:0;
+    top: 0;
+    display: none;
+    color: #fff;
+    background-color: #3bdc3599;
+}
+
+.remove {
+    cursor: pointer;
+    background-color: #fffc;
+    position: absolute;
+    right:0;
+    top:30px;
+    display: none;
+    color: #fff;
+    background-color: #dc354599;
+}
+
+.insert {
+    cursor: pointer;
+    background-color: #fffc;
+    position: absolute;
+    right:35px;
+    top: 0px;
+    display: none;
+    color: #fff;
+    background-color: #dcc33599;
+}
+
+.edit {
+    cursor: pointer;
+    background-color: #fffc;
+    position: absolute;
+    right:35px;
+    top: 30px;
+    display: none;
+    color: #fff;
+    background-color: #3546dc99;
+}
+
+.break {
+    width: 100%;
+    /* margin-top: 0 !important;
+    margin-bottom: 1 !important; */
+}
+
+.break::before {
+    content: "";
+    flex: auto;
+}
+
+.pagination {
+    position: absolute;
+    bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 50%;
+    right: 50%;
+    font-family: GrebnevUCS;
+    font-size:  24pt;
+}
+
+@media print {
+
+    @page {
+        margin: 0cm;
+    }
+
+    body {
+      visibility: hidden;
+    }
+
+    .paperMargin {
+      visibility: visible;
+      justify-content: space-between;
+      margin: 0;
+     }
+     
+
+     .a4 {
+         border: none;
+         margin: 0;
+         page-break-inside: avoid;
+     }
+
+     .break {
+        visibility: hidden;
+     }
+     .add-page {
+        visibility: hidden;
+     }
+}
+
+/* SIZES OF SYLLABLES */
+
+/* SIZE 30 */
+
+
+.size30 > .symbol {
+    font-size: 30pt;
+    height: 40px;
+}
+
+.size30 > .text {
+font-size: 12pt;
+}
+
+/* SIZE 40 */
+
+.size40 > .symbol {
+    font-size: 40pt;
+    height: 40px;
+}
+
+.size40 > .text {
+font-size: 16pt;
+}
+
+/* SIZE 50 */
+
+.size50 > .symbol {
+    font-size: 50pt;
+    height: 65px;
+}
+
+.size50 > .text {
+font-size: 20pt;
+}
+
+/* SIZE 60 */
+
+.size60 > .symbol {
+    font-size: 60pt;
+    height: 80px;
+}
+
+.size60 > .text {
+font-size: 24pt;
+}
+
+/* SIZE 70 */
+
+.size70 > .symbol {
+    font-size: 70pt;
+    height: 90px;
+}
+
+.size70 > .text {
+font-size: 28pt;
+}
+
+/* SIZE 80 */
+
+.size80 > .symbol {
+    font-size: 80pt;
+    height: 100px;
+}
+
+.size80 > .text {
+    font-size: 32pt;
+    margin-left: 30px;
+}
