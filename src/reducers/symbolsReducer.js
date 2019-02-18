@@ -1,5 +1,5 @@
 import { filter, find, clone, difference, uniq, concat } from 'lodash'
-import { KRUKI, COMPOSITIONS } from '../res/index'
+import { COMPOSITIONS } from '../res/index'
 import { getDataFromServer } from '../utils'
 
 import {
@@ -45,6 +45,10 @@ export default (state = initialState, action) => {
       return {
         ...state,
         symbols,
+        namesOfSymbols: symbols.map(symbol => ({
+          id: symbol['_id'],
+          label: symbol.name,
+        })),
       }
     }
 
