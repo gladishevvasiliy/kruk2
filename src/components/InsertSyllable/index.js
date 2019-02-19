@@ -24,8 +24,6 @@ import {
 } from '../../actions'
 
 import { RFReactSelect, RFReactMultiSelect, Loading } from '../../utils'
-import { KRUKI } from '../../res/'
-
 import './style.css'
 
 class InsertSyllable extends Component {
@@ -42,13 +40,7 @@ class InsertSyllable extends Component {
   handleKeyPress(e) {
     if (e.key === 'Enter') {
       e.preventDefault()
-      const {
-        symbols,
-        actions,
-        editableSyllable,
-        indexToInsert,
-        paper,
-      } = this.props
+      const { symbols, actions, editableSyllable, indexToInsert } = this.props
 
       // if (isNil(paper.syllables[paper.currentPageNum])) {
       //   return
@@ -124,7 +116,6 @@ class InsertSyllable extends Component {
     const { symbols, paper, namesOfSymbols } = this.props
     const options = symbols.options
     const pitchs = symbols.pitchs
-    console.log(namesOfSymbols)
     if (isNil(symbols)) return <Loading />
     return (
       <React.Fragment>
@@ -135,7 +126,7 @@ class InsertSyllable extends Component {
             <Field
               name="name"
               list="symbols"
-              options={KRUKI}
+              options={namesOfSymbols}
               onChange={this.handleChangeName}
               component={RFReactSelect}
               className="input input-name"

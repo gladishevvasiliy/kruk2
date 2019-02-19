@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Alert } from 'reactstrap'
 import { isNil } from 'lodash'
-import Tour from 'reactour'
 
 import {
   InsertSyllable,
@@ -17,10 +16,8 @@ import {
 
 import { Attention } from '../../containers/'
 
-import { Header, getDataFromServer } from '../../utils'
+import { Header } from '../../utils'
 import { removeLastSyllable, setSymbols } from '../../actions'
-import { GUIDE_STEPS } from '../../res/'
-
 import '../../res/bootstrap/css/bootstrap.min.css'
 import './style.css'
 
@@ -50,13 +47,6 @@ class Paper extends Component {
     const showError = isNil(paper.syllables[paper.currentPageNum])
     return (
       <React.Fragment>
-        <Tour
-          steps={GUIDE_STEPS}
-          isOpen={this.state.isTourOpen}
-          onRequestClose={this.closeTour}
-          className="helper"
-          closeWithMask={false}
-        />
         {localStorage.getItem('visited') ? null : <Attention />}
         <Header />
         <div className="Paper">

@@ -40,46 +40,41 @@ const checkError = symbols => {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_SYMBOLS: {
-      console.log(SET_SYMBOLS)
       const symbols = action.payload
       return {
         ...state,
         symbols,
         namesOfSymbols: symbols.map(symbol => ({
-          id: symbol['_id'],
+          value: symbol['_id'],
           label: symbol.name,
         })),
       }
     }
 
     case FILTER_SYMBOLS_BY_NAME: {
-      console.log(FILTER_SYMBOLS_BY_NAME)
       const { symbols } = state
       const currentNameOfSymbol = action.payload
       const symbolsFilteredByName = find(
         symbols,
         symbol => symbol.name === currentNameOfSymbol
       )
-      console.log(symbolsFilteredByName)
 
       return {
         ...state,
-        currentSymbols: symbolsFilteredByName,
-        symbols: symbolsFilteredByName,
+        symbolsFilteredByName: symbolsFilteredByName.symbols,
+        currentSymbols: symbolsFilteredByName.symbols,
       }
     }
 
     case FILTER_SYMBOLS_BY_OPTIONS: {
-      console.log(FILTER_SYMBOLS_BY_OPTIONS) // TODO без важности порядка опций
-      const { symbols } = state
+      const { symbolsFilteredByName } = state
       const currentOptionsOfSymbol = action.payload
       const symbolsFilteredByOptions = filter(
-        symbols.symbols,
+        symbolsFilteredByName,
         symbol =>
           difference(currentOptionsOfSymbol, symbol.opts).length === 0 &&
           difference(symbol.opts, currentOptionsOfSymbol).length === 0
       )
-      console.log(symbolsFilteredByOptions)
       return {
         ...state,
         symbolsFilteredByOptions,
@@ -89,14 +84,12 @@ export default (state = initialState, action) => {
     }
 
     case FILTER_SYMBOLS_BY_PITCH: {
-      console.log(FILTER_SYMBOLS_BY_PITCH)
       const { symbolsFilteredByOptions } = state
       const currentPitchOfSymbol = action.payload
       const symbolsFilteredByPitch = filter(
         symbolsFilteredByOptions,
         ({ pitch }) => pitch === currentPitchOfSymbol
       ) // eslint-disable-line max-len
-      console.log(symbolsFilteredByPitch)
 
       return {
         ...state,
@@ -107,13 +100,11 @@ export default (state = initialState, action) => {
     }
 
     case ADD_TEXT_TO_SYLLABLE: {
-      console.log(ADD_TEXT_TO_SYLLABLE)
       const { symbolsFilteredByPitch } = state
       const textForInsert = action.payload
       const symbolWithText = clone(symbolsFilteredByPitch)[0]
       symbolWithText.text = textForInsert
       symbolWithText.type = 'KRUK'
-      console.log(symbolWithText)
       return {
         ...state,
         symbolWithText,
@@ -121,11 +112,10 @@ export default (state = initialState, action) => {
     }
 
     case CREATE_OPTIONS_LIST: {
-      const { symbols } = state
-      const choosedSymbols = symbols.symbols
+      const { symbolsFilteredByName } = state
       let emptyArray = []
       // map array  of symbols, and in everi item add array of opts to emptyArray
-      choosedSymbols.map(symbol => {
+      symbolsFilteredByName.map(symbol => {
         emptyArray = concat(emptyArray, symbol.opts)
       }) // eslint-disable-line
       const uniqOptions = uniq(emptyArray) // uniq our array of opts
@@ -181,14 +171,12 @@ export default (state = initialState, action) => {
     }
 
     case GET_SYMBOLS:
-      console.log(GET_SYMBOLS)
       return {
         ...state,
         symbols: initialState.symbols,
       }
 
     case GET_COMPOSITIONS:
-      console.log(GET_COMPOSITIONS)
       return {
         ...state,
         compositions: COMPOSITIONS,
