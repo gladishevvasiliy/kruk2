@@ -52,7 +52,7 @@ class AreaOfSymbols extends Component {
             <span
               className="pagination"
               style={{ display: showPagination ? 'inline' : 'none' }}
-              dangerouslySetInnerHTML={{ __html: getPageNum(pageIndex) }}
+              dangerouslySetInnerHTML={{ __html: getPageNum(pageIndex + 1) }}
             />
           </div>
         </React.Fragment>
@@ -184,7 +184,7 @@ const mapDispatchToProps = dispatch => ({
       removeSyllablebyIndex,
       changeParagraph,
     },
-    dispatch,
+    dispatch
   ),
 })
 

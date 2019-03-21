@@ -1,49 +1,44 @@
-const getPageNum = (pageIndex) => {
-const pageNum = pageIndex + 1
-  switch (pageNum) {
-    case 1:
-      return 'а7'
-    case 2:
-      return 'в7'
-    case 3:
-      return 'г7'
-    case 4:
-      return 'д7'
-    case 5:
-      return 'е7'
-    case 6:
-      return 'ѕ7'
-    case 7:
-      return 'з7'
-    case 8:
-      return 'и7'
-    case 9:
-      return 'f7'
-    case 10:
-      return 'i7'
-    case 11:
-      return 'аi7'
-    case 12:
-      return 'вi7'
-    case 13:
-      return 'гi7'
-    case 14:
-      return 'дi7'
-    case 15:
-      return 'еi7'
-    case 16:
-      return 'ѕi7'
-    case 17:
-      return 'зi7'
-    case 18:
-      return 'иi7'
-    case 19:
-      return 'fi7'
-    case 20:
-      return 'к7'
-    default:
-      return ''
+import { isNil } from 'lodash'
+
+const slavonicNumbers = {
+  1: 'а',
+  2: 'в',
+  3: 'г',
+  4: 'д',
+  5: 'е',
+  6: 'ѕ',
+  7: 'з',
+  8: 'и',
+  9: 'f',
+  10: 'i',
+  20: 'к',
+  30: 'л',
+  40: 'м',
+  50: 'н',
+}
+
+const getPageNum = (arabicNum) => {
+  // если до 10 просто добавляем титлу
+  if (arabicNum <= 10) {
+    return `${slavonicNumbers[arabicNum]}7`
   }
+
+  // если от 11 до 19 то беерм остаток от деления на 10, примисываем славянскую 10 и титлу
+  if (arabicNum > 10 && arabicNum < 20) {
+    return `${slavonicNumbers[arabicNum % 10]}i7`
+  }
+
+  // если больше 20 то если число не встречается в масссиве слав чисел (там только целые),
+  // то возвращаем слав число десятичной части + слав число 0го разряда
+  if (arabicNum >= 20 && arabicNum < 60) {
+    if (isNil(slavonicNumbers[arabicNum])) {
+      return `${slavonicNumbers[Math.floor(arabicNum - (arabicNum % 10))]}${
+        slavonicNumbers[arabicNum % 10]
+      }7`
+    }
+    return `${slavonicNumbers[arabicNum]}7`
+  }
+  return ''
 }
 
 export default getPageNum
