@@ -329,6 +329,7 @@ font-size: 12pt;
 
 .size40 > .text {
 font-size: 16pt;
+margin-top: 25px;
 }
 
 /* SIZE 50 */
