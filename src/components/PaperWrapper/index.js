@@ -30,6 +30,7 @@ export class PaperWrapper extends Component {
           className="spinner spinner--steps icon-spinner loading-gif"
           aria-hidden="true"
         />
+                <p className="notice">При первом запуске пройдите по следующему адресу: <a href="https://84.201.133.135:8443/kruk/all">https://84.201.133.135:8443/kruk/all</a> и добавьте исключение безопасности.</p>
       </React.Fragment>
     ) : (
       <Paper />
