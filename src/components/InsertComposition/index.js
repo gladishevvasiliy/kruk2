@@ -19,28 +19,37 @@ class InsertComposition extends Component {
   }
 
   changeTone = (e) => {
-    const { actions, compositions } = this.props
-    const symbolsFilteredByPitch = filter(compositions, ({ tone }) => tone === e.label)
-    symbolsFilteredByPitch[0].value.map(item => actions.addSyllable({ value: item, text: '-', type: 'KRUK' }))
+    const { actions, currentCompositions } = this.props
+    console.log('compositions')
+    console.log(currentCompositions)
+    const symbolsFilteredByPitch = filter(
+      currentCompositions,
+      ({ tone }) => tone === e.label,
+    )
+    console.log('symbolsFilteredByPitch')
+    console.log(symbolsFilteredByPitch)
+    symbolsFilteredByPitch[0].value.map(item =>
+      actions.addSyllable({ value: item, text: '-', type: 'KRUK' }),
+    )
   }
 
   render() {
-    const { tones } = this.props
+    const { tones, compositionsLables } = this.props
     return (
       <div className="insertComposition text-left">
         <h4 className="text-left">Вставить попевку</h4>
-        <div className="field" >
+        <div className="field">
           <label htmlFor="Name">Название</label>
           <Field
             name="name"
             list="compositions"
-            options={COMPOSITIONS}
+            options={compositionsLables}
             onChange={this.changeName}
             component={RFReactSelect}
             className="input"
           />
         </div>
-        <div className="field" >
+        <div className="field">
           <label htmlFor="Name">Глас</label>
           <Field
             name="tone"
@@ -61,18 +70,30 @@ const InsertCompositionWithForm = reduxForm({
 })(InsertComposition)
 
 const mapStateToProps = state => ({
-  compositions: state.symbols.compositions,
+  compositionsLables: state.symbols.compositions.map(item => ({
+    id: item._id,
+    label: item.name,
+    value: item.compositions,
+  })),
+  currentCompositions: state.symbols.currentCompositions,
   tones: state.symbols.tones,
 })
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    addSyllable,
-    createToneList,
-    getCompositions,
-  }, dispatch) })
+  actions: bindActionCreators(
+    {
+      addSyllable,
+      createToneList,
+      getCompositions,
+    },
+    dispatch,
+  ),
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(InsertCompositionWithForm)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(InsertCompositionWithForm)
 
 InsertComposition.propTypes = {
   actions: PropTypes.object,

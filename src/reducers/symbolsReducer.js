@@ -1,4 +1,4 @@
-import { filter, find, clone, difference, uniq, concat } from 'lodash'
+import { filter, find, clone, difference, uniq, concat, isEmpty } from 'lodash'
 import { COMPOSITIONS } from '../res/index'
 import { getDataFromServer } from '../utils'
 
@@ -19,7 +19,7 @@ import {
 
 const initialState = {
   symbols: [],
-  compositions: COMPOSITIONS,
+  compositions: [],
   error: '',
   currentSymbols: [],
   options: [],
@@ -29,6 +29,43 @@ const initialState = {
 getDataFromServer('https://84.201.133.135:8443/kruk/all').then(data => {
   initialState.symbols = data
 })
+
+getDataFromServer('https://84.201.133.135:8443/composition/all')
+  .then(data => {
+    initialState.compositions = data
+  })
+  .then(() => {
+    let i = 1
+    const compositionsSortedByTone = [
+      { tone: 1, compositions: [] },
+      { tone: 2, compositions: [] },
+      { tone: 3, compositions: [] },
+      { tone: 4, compositions: [] },
+      { tone: 5, compositions: [] },
+      { tone: 6, compositions: [] },
+      { tone: 7, compositions: [] },
+      { tone: 8, compositions: [] },
+    ]
+    while (i < 9) {
+      const typeOfCompositions = clone(initialState.compositions)
+      const filteredByTone = typeOfCompositions.map(composition =>
+        composition.compositions.filter(
+          subComposition => subComposition.tone.indexOf(i.toString()) !== -1
+        )
+      )
+
+      const compositionsOfTone = find(compositionsSortedByTone, { tone: i })
+        .compositions
+      filteredByTone.forEach(array =>
+        isEmpty(array)
+          ? null
+          : (compositionsOfTone = [...compositionsOfTone, array])
+      )
+      console.log(filteredByTone)
+      i += 1
+    }
+    console.log(compositionsSortedByTone)
+  })
 
 const checkError = symbols => {
   if (symbols.length === 0) {
@@ -45,7 +82,7 @@ export default (state = initialState, action) => {
         ...state,
         symbols,
         namesOfSymbols: symbols.map(symbol => ({
-          value: symbol['_id'],
+          value: symbol._id,
           label: symbol.name,
         })),
       }
@@ -153,6 +190,8 @@ export default (state = initialState, action) => {
 
     case CREATE_TONE_LIST: {
       const currentCompositions = action.payload
+      console.log('currentCompositions')
+      console.log(currentCompositions)
       let emptyArray = []
       currentCompositions.map(composition => {
         emptyArray = concat(emptyArray, composition.tone)
@@ -165,7 +204,7 @@ export default (state = initialState, action) => {
 
       return {
         ...state,
-        compositions: action.payload,
+        currentCompositions: action.payload,
         tones: labels,
       }
     }
@@ -179,7 +218,7 @@ export default (state = initialState, action) => {
     case GET_COMPOSITIONS:
       return {
         ...state,
-        compositions: COMPOSITIONS,
+        compositions: initialState.compositions,
       }
 
     case CHECK_ERROR: {

@@ -26,6 +26,7 @@ import {
   CHANGE_PAGE,
   REMOVE_PAGE,
   CREATE_TONE_LIST,
+  SET_COMPOSITIONS,
   GET_COMPOSITIONS,
   CHANGE_PARAGRAPH,
   DELETE_PARAGRAPH,
@@ -162,6 +163,11 @@ export const createToneList = state => ({
 export const getCompositions = state => ({
   type: GET_COMPOSITIONS,
   payload: state,
+})
+
+export const setCompositions = compositions => ({
+  type: SET_COMPOSITIONS,
+  payload: compositions,
 })
 
 export const changeParagraph = paragraphIndex => ({
