@@ -39,7 +39,7 @@ class InsertComposition extends Component {
           />
         </div>
         <div className="field">
-          <label htmlFor="Name">Глас</label>
+          <label htmlFor="Name">Название</label>
           <Field
             name="name"
             options={compositionsNames}
