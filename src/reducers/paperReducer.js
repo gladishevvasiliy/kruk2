@@ -33,7 +33,11 @@ if (!isNil(localStorage.getItem('pages'))) {
 const initialState = {
   syllables: document,
   currentPageNum: document.length === 0 ? 0 : document.length - 1,
-  currentParagraphNum: isNil(document[document.length - 1]) ? 0 : document[document.length - 1].length === 0 ? 0 : document[document.length - 1].length - 1, // eslint-disable-line
+  currentParagraphNum: isNil(document[document.length - 1])
+    ? 0
+    : document[document.length - 1].length === 0
+    ? 0
+    : document[document.length - 1].length - 1, // eslint-disable-line
   showPagination: true,
   showModalDeletePage: false,
 }
@@ -46,7 +50,6 @@ export default (state = initialState, action) => {
     currentParagraph = currentPageSyllables[currentParagraphNum]
   }
 
-
   switch (action.type) {
     case ADD_SYLLABLE: {
       let currentSyllablesWithNew = []
@@ -56,7 +59,9 @@ export default (state = initialState, action) => {
         currentSyllablesWithNew = [...currentParagraph, action.payload]
       }
       const newSyllables = Array.from(syllables)
-      newSyllables[currentPageNum][currentParagraphNum] = currentSyllablesWithNew
+      newSyllables[currentPageNum][
+        currentParagraphNum
+      ] = currentSyllablesWithNew
       localStorage.setItem('pages', JSON.stringify(newSyllables))
       return {
         ...state,
@@ -129,7 +134,7 @@ export default (state = initialState, action) => {
       }
     }
 
-    case SHOW_MODAL_EDIT_TEXT : {
+    case SHOW_MODAL_EDIT_TEXT: {
       const indexOfEditableText = action.payload
       return {
         ...state,
@@ -138,12 +143,11 @@ export default (state = initialState, action) => {
       }
     }
 
-    case HIDE_MODAL_EDIT_TEXT : {
+    case HIDE_MODAL_EDIT_TEXT: {
       return {
         ...state,
         showModalEditText: false,
         indexOfEditableText: null,
-
       }
     }
 
@@ -153,7 +157,9 @@ export default (state = initialState, action) => {
       const afterIndex = parseInt(index) + 1 // eslint-disable-line
       currentParagraphWithInsert.splice(afterIndex, 0, syllable)
       const newSyllables = Array.from(syllables)
-      newSyllables[currentPageNum][currentParagraphNum] = currentParagraphWithInsert
+      newSyllables[currentPageNum][
+        currentParagraphNum
+      ] = currentParagraphWithInsert
       localStorage.setItem('pages', JSON.stringify(newSyllables))
 
       return {
@@ -167,7 +173,9 @@ export default (state = initialState, action) => {
       const currentParagraphWithChange = Array.from(currentParagraph)
       currentParagraphWithChange[indexOfChangingSyllable] = syllable
       const newSyllables = Array.from(syllables)
-      newSyllables[currentPageNum][currentParagraphNum] = currentParagraphWithChange
+      newSyllables[currentPageNum][
+        currentParagraphNum
+      ] = currentParagraphWithChange
       localStorage.setItem('pages', JSON.stringify(newSyllables))
 
       return {
@@ -182,7 +190,9 @@ export default (state = initialState, action) => {
       const currentParagraphEditText = Array.from(currentParagraph)
       currentParagraphEditText[indexOfEditableText].text = newText
       const newSyllables = Array.from(syllables)
-      newSyllables[currentPageNum][currentParagraphNum] = currentParagraphEditText
+      newSyllables[currentPageNum][
+        currentParagraphNum
+      ] = currentParagraphEditText
       localStorage.setItem('pages', JSON.stringify(newSyllables))
       return {
         ...state,
@@ -202,7 +212,8 @@ export default (state = initialState, action) => {
     case ADD_PAGE: {
       let newPageNum = currentPageNum + 1
 
-      if (syllables.length === 0) { // if first page
+      if (syllables.length === 0) {
+        // if first page
         newPageNum = 0
       }
 
@@ -211,7 +222,6 @@ export default (state = initialState, action) => {
         currentPageNum: newPageNum,
         syllables: [...syllables, []],
         currentParagraphNum: 0, //  to start on new page from first paragraph
-
       }
     }
 
@@ -239,7 +249,8 @@ export default (state = initialState, action) => {
       newSyllables.splice(pageIndex, 1)
       localStorage.setItem('pages', JSON.stringify(newSyllables))
 
-      if (pageIndex === currentPageNum) { // if you delete active page
+      if (pageIndex === currentPageNum) {
+        // if you delete active page
         return {
           ...state,
           syllables: newSyllables,
@@ -278,12 +289,12 @@ export default (state = initialState, action) => {
         ...state,
         showModalDeleteParagraph: false,
         indexOfDeletingParagraph: null,
-
       }
     }
 
     case CHECK_PARAGRAPH_IS_EMPTY: {
-      if (currentParagraph.length === 0) { // isNil?
+      if (currentParagraph.length === 0) {
+        // isNil?
         const newSyllables = Array.from(syllables)
         newSyllables[currentPageNum].splice(currentParagraphNum, 1)
         localStorage.setItem('pages', JSON.stringify(newSyllables))
@@ -312,7 +323,6 @@ export default (state = initialState, action) => {
 
     case TOGGLE_MODAL_DELETE_PAGE: {
       const indexOfDeletingPage = action.payload
-      console.log(state.showModalDeletePage)
       if (state.showModalDeletePage) {
         return {
           ...state,

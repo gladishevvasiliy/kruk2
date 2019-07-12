@@ -25,7 +25,7 @@ import {
   ADD_PAGE,
   CHANGE_PAGE,
   REMOVE_PAGE,
-  CREATE_TONE_LIST,
+  CREATE_NAMES_LIST,
   SET_COMPOSITIONS,
   GET_COMPOSITIONS,
   CHANGE_PARAGRAPH,
@@ -155,8 +155,8 @@ export const removePage = pageIndex => ({
   payload: pageIndex,
 })
 
-export const createToneList = state => ({
-  type: CREATE_TONE_LIST,
+export const createNamesList = state => ({
+  type: CREATE_NAMES_LIST,
   payload: state,
 })
 

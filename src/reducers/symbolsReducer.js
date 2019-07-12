@@ -1,5 +1,4 @@
 import { filter, find, clone, difference, uniq, concat, isEmpty } from 'lodash'
-import { COMPOSITIONS } from '../res/index'
 import { getDataFromServer } from '../utils'
 
 import {
@@ -13,7 +12,7 @@ import {
   CHECK_ERROR,
   ERROR_NO_DEFINE_SYMBOL,
   CREATE_PITCH_LIST,
-  CREATE_TONE_LIST,
+  CREATE_NAMES_LIST,
   GET_COMPOSITIONS,
 } from '../constants/'
 
@@ -23,49 +22,45 @@ const initialState = {
   error: '',
   currentSymbols: [],
   options: [],
-  tones: [],
+  compositionsNames: [],
 }
 
 getDataFromServer('https://84.201.133.135:8443/kruk/all').then(data => {
   initialState.symbols = data
 })
 
-getDataFromServer('https://84.201.133.135:8443/composition/all')
-  .then(data => {
-    initialState.compositions = data
-  })
-  .then(() => {
-    let i = 1
-    const compositionsSortedByTone = [
-      { tone: 1, compositions: [] },
-      { tone: 2, compositions: [] },
-      { tone: 3, compositions: [] },
-      { tone: 4, compositions: [] },
-      { tone: 5, compositions: [] },
-      { tone: 6, compositions: [] },
-      { tone: 7, compositions: [] },
-      { tone: 8, compositions: [] },
-    ]
-    while (i < 9) {
-      const typeOfCompositions = clone(initialState.compositions)
-      const filteredByTone = typeOfCompositions.map(composition =>
-        composition.compositions.filter(
-          subComposition => subComposition.tone.indexOf(i.toString()) !== -1
-        )
+getDataFromServer('https://84.201.133.135:8443/composition/all').then(data => {
+  let i = 1
+  const compositionsSortedByTone = [
+    { tone: 1, compositions: [] },
+    { tone: 2, compositions: [] },
+    { tone: 3, compositions: [] },
+    { tone: 4, compositions: [] },
+    { tone: 5, compositions: [] },
+    { tone: 6, compositions: [] },
+    { tone: 7, compositions: [] },
+    { tone: 8, compositions: [] },
+  ]
+  while (i < 9) {
+    const typeOfCompositions = clone(data) // this code divides compositions by tones
+    const filteredByTone = typeOfCompositions.map(composition =>
+      composition.compositions.filter(
+        subComposition => subComposition.tone.indexOf(i.toString()) !== -1
       )
+    )
 
-      const compositionsOfTone = find(compositionsSortedByTone, { tone: i })
-        .compositions
-      filteredByTone.forEach(array =>
-        isEmpty(array)
-          ? null
-          : (compositionsOfTone = [...compositionsOfTone, array])
-      )
-      console.log(filteredByTone)
-      i += 1
-    }
-    console.log(compositionsSortedByTone)
-  })
+    const compositionsOfTone = find(compositionsSortedByTone, { tone: i })
+    filteredByTone.forEach(array => {
+      if (!isEmpty(array))
+        compositionsOfTone.compositions = [
+          ...compositionsOfTone.compositions,
+          ...array,
+        ]
+    })
+    i += 1
+  }
+  initialState.compositions = compositionsSortedByTone
+})
 
 const checkError = symbols => {
   if (symbols.length === 0) {
@@ -188,24 +183,19 @@ export default (state = initialState, action) => {
       }
     }
 
-    case CREATE_TONE_LIST: {
-      const currentCompositions = action.payload
-      console.log('currentCompositions')
-      console.log(currentCompositions)
-      let emptyArray = []
-      currentCompositions.map(composition => {
-        emptyArray = concat(emptyArray, composition.tone)
-      }) // eslint-disable-line
-      const uniqTones = uniq(emptyArray) // uniq our array of opts
-      let index = 0
-      const labels = uniqTones.map(tone => ({ value: index++, label: tone })) // eslint-disable-line
-      console.log('CREATE_TONE_LIST')
-      console.log(labels)
+    case CREATE_NAMES_LIST: {
+      const currentTone = action.payload // here we change current compositions
+      const compositionsByTone = find(state.compositions, { tone: currentTone })
+        .compositions
+      const compositionsNamesList = compositionsByTone.map(composition => ({
+        name: composition.name,
+        id: composition._id,
+      }))
 
       return {
         ...state,
-        currentCompositions: action.payload,
-        tones: labels,
+        currentCompositions: compositionsByTone,
+        compositionsNames: compositionsNamesList,
       }
     }
 
