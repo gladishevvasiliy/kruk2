@@ -1,5 +1,4 @@
-import { filter, find, clone, difference, uniq, concat } from 'lodash'
-import { COMPOSITIONS } from '../res/index'
+import { filter, find, clone, difference, uniq, concat, isEmpty } from 'lodash'
 import { getDataFromServer } from '../utils'
 
 import {
@@ -13,21 +12,54 @@ import {
   CHECK_ERROR,
   ERROR_NO_DEFINE_SYMBOL,
   CREATE_PITCH_LIST,
-  CREATE_TONE_LIST,
+  CREATE_NAMES_LIST,
   GET_COMPOSITIONS,
 } from '../constants/'
 
 const initialState = {
   symbols: [],
-  compositions: COMPOSITIONS,
+  compositions: [],
   error: '',
   currentSymbols: [],
   options: [],
-  tones: [],
+  compositionsNames: [],
 }
 
 getDataFromServer('https://84.201.133.135:8443/kruk/all').then(data => {
   initialState.symbols = data
+})
+
+getDataFromServer('https://84.201.133.135:8443/composition/all').then(data => {
+  let i = 1
+  const compositionsSortedByTone = [
+    { tone: 1, compositions: [] },
+    { tone: 2, compositions: [] },
+    { tone: 3, compositions: [] },
+    { tone: 4, compositions: [] },
+    { tone: 5, compositions: [] },
+    { tone: 6, compositions: [] },
+    { tone: 7, compositions: [] },
+    { tone: 8, compositions: [] },
+  ]
+  while (i < 9) {
+    const typeOfCompositions = clone(data) // this code divides compositions by tones
+    const filteredByTone = typeOfCompositions.map(composition =>
+      composition.compositions.filter(
+        subComposition => subComposition.tone.indexOf(i.toString()) !== -1
+      )
+    )
+
+    const compositionsOfTone = find(compositionsSortedByTone, { tone: i })
+    filteredByTone.forEach(array => {
+      if (!isEmpty(array))
+        compositionsOfTone.compositions = [
+          ...compositionsOfTone.compositions,
+          ...array,
+        ]
+    })
+    i += 1
+  }
+  initialState.compositions = compositionsSortedByTone
 })
 
 const checkError = symbols => {
@@ -45,7 +77,7 @@ export default (state = initialState, action) => {
         ...state,
         symbols,
         namesOfSymbols: symbols.map(symbol => ({
-          value: symbol['_id'],
+          value: symbol._id,
           label: symbol.name,
         })),
       }
@@ -151,22 +183,19 @@ export default (state = initialState, action) => {
       }
     }
 
-    case CREATE_TONE_LIST: {
-      const currentCompositions = action.payload
-      let emptyArray = []
-      currentCompositions.map(composition => {
-        emptyArray = concat(emptyArray, composition.tone)
-      }) // eslint-disable-line
-      const uniqTones = uniq(emptyArray) // uniq our array of opts
-      let index = 0
-      const labels = uniqTones.map(tone => ({ value: index++, label: tone })) // eslint-disable-line
-      console.log('CREATE_TONE_LIST')
-      console.log(labels)
+    case CREATE_NAMES_LIST: {
+      const currentTone = action.payload // here we change current compositions
+      const compositionsByTone = find(state.compositions, { tone: currentTone })
+        .compositions
+      const compositionsNamesList = compositionsByTone.map(composition => ({
+        name: composition.name,
+        id: composition._id,
+      }))
 
       return {
         ...state,
-        compositions: action.payload,
-        tones: labels,
+        currentCompositions: compositionsByTone,
+        compositionsNames: compositionsNamesList,
       }
     }
 
@@ -179,7 +208,7 @@ export default (state = initialState, action) => {
     case GET_COMPOSITIONS:
       return {
         ...state,
-        compositions: COMPOSITIONS,
+        compositions: initialState.compositions,
       }
 
     case CHECK_ERROR: {

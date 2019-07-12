@@ -6,10 +6,10 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap' 
 
 import { toggleModalDeletePage, removePage } from '../../actions'
 
-class RemovePageModal extends Component { // eslint-disable-line
+class RemovePageModal extends Component {
+  // eslint-disable-line
 
   yes = () => {
-    console.log("yes")
     const { actions, indexOfDeletingPage } = this.props
     actions.removePage(indexOfDeletingPage)
     actions.toggleModalDeletePage()
@@ -29,8 +29,12 @@ class RemovePageModal extends Component { // eslint-disable-line
           <p>Вы уверены что хотите удалить эту страницу?</p>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.yes}>Да</Button>
-          <Button color="secondary" onClick={this.cancel}>Отмена</Button>
+          <Button color="primary" onClick={this.yes}>
+            Да
+          </Button>
+          <Button color="secondary" onClick={this.cancel}>
+            Отмена
+          </Button>
         </ModalFooter>
       </Modal>
     )
@@ -43,12 +47,19 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    toggleModalDeletePage,
-    removePage,
-  }, dispatch) })
+  actions: bindActionCreators(
+    {
+      toggleModalDeletePage,
+      removePage,
+    },
+    dispatch
+  ),
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(RemovePageModal)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RemovePageModal)
 
 RemovePageModal.propTypes = {
   showModalDeletePage: PropTypes.bool,

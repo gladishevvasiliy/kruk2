@@ -8,14 +8,6 @@ export class RFReactSelect extends React.Component {
     this.myRef = React.createRef()
   }
 
-  // componentDidMount() {
-  //   const { name } = this.props.input
-  //   if (name === 'name') {
-  //     console.log("object")
-  //     this.myRef.current.focus()
-  //   }
-  // }
-
   render() {
     const { input, options, className } = this.props
     const { name, value, onBlur, onChange, onFocus } = input
@@ -31,18 +23,16 @@ export class RFReactSelect extends React.Component {
         onFocus={onFocus}
         className={className}
         // ref={this.refs.myRef}
-        // autoFocus={name === 'name' ? true : false} 
+        // autoFocus={name === 'name' ? true : false}
       />
     )
   }
-  
 }
 
 RFReactSelect.propTypes = {
   input: PropTypes.object,
   options: PropTypes.array,
   className: PropTypes.string,
-
 }
 
 export const RFReactMultiSelect = ({ input, options, className }) => {
@@ -66,6 +56,4 @@ RFReactMultiSelect.propTypes = {
   input: PropTypes.object,
   options: PropTypes.array,
   className: PropTypes.string,
-
 }
-
