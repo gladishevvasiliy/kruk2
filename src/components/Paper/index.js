@@ -69,10 +69,10 @@ class Paper extends Component {
               <CurrentSymbols />
             </div>
             <div className="control-block">
-              <InsertComposition />
               <PaperStyle />
             </div>
             <div className="control-block control-block-last">
+              <InsertComposition />
               <InsertText />
             </div>
           </div>

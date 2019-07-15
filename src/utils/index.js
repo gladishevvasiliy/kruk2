@@ -5,6 +5,7 @@ import Loading from './Loading'
 import Header from './Header'
 import RangeInput from './RangeInput'
 import getPageNum from './getPageNum'
+import Select from './Select'
 
 export {
   RFReactMultiSelect,
@@ -15,6 +16,7 @@ export {
   getPageNum,
   withErrorHandling,
   DivWithErrorHandling,
+  Select,
 }
 
 export const getDataFromServer = (url: string) => {

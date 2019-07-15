@@ -4,7 +4,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import './style.css'
 
-import { changeParagraph, addSyllable, toggleShowPagination } from '../../actions'
+import {
+  changeParagraph,
+  addSyllable,
+  toggleShowPagination,
+} from '../../actions'
 
 class InsertText extends Component {
   constructor(props) {
@@ -12,7 +16,7 @@ class InsertText extends Component {
     this.state = {}
   }
 
-  addBucvica = (e) => {
+  addBucvica = e => {
     if (e.key === 'Enter') {
       e.preventDefault()
       const { actions } = this.props
@@ -21,7 +25,7 @@ class InsertText extends Component {
     }
   }
 
-  addText = (e) => {
+  addText = e => {
     if (e.key === 'Enter') {
       e.preventDefault()
       const { actions } = this.props
@@ -31,7 +35,12 @@ class InsertText extends Component {
   }
 
   newParagraph = () => {
-    const { actions, syllables, currentPageNum, currentParagraphNum } = this.props
+    const {
+      actions,
+      syllables,
+      currentPageNum,
+      currentParagraphNum,
+    } = this.props
     if (syllables[currentPageNum][currentParagraphNum] === undefined) {
       return
     }
@@ -48,9 +57,11 @@ class InsertText extends Component {
   render() {
     return (
       <div className="insert-text text-left">
-        <h4>Вставка текста</h4>
-        <form onKeyPress={this.addText}>  {/* eslint-disable-line */}
-          <div className="field field-insert-text" >
+        <h4 className="text-left">Вставка текста</h4>
+        <form onKeyPress={this.addText}>
+          {' '}
+          {/* eslint-disable-line */}
+          <div className="field field-insert-text">
             <label htmlFor="Name">Вставить текст</label>
             <input
               label="Текст"
@@ -59,14 +70,12 @@ class InsertText extends Component {
             />
           </div>
         </form>
-        <form onKeyPress={this.addBucvica}>  {/* eslint-disable-line */}
-          <div className="field field-insert-bucvica" >
+        <form onKeyPress={this.addBucvica}>
+          {' '}
+          {/* eslint-disable-line */}
+          <div className="field field-insert-bucvica">
             <label htmlFor="Name">Вставить буквицу</label>
-            <input
-              label="Буквица"
-              name="bucvica"
-              className="form-control"
-            />
+            <input label="Буквица" name="bucvica" className="form-control" />
           </div>
         </form>
         <button
@@ -84,11 +93,8 @@ class InsertText extends Component {
             id="showPagination"
             onChange={this.toggleShowPagination}
           />
-          <label
-            className="custom-control-label"
-            htmlFor="showPagination"
-          >
-          Отображать номера страниц
+          <label className="custom-control-label" htmlFor="showPagination">
+            Отображать номера страниц
           </label>
         </div>
       </div>
@@ -103,15 +109,20 @@ const mapStateToProps = state => ({
   syllables: state.paper.syllables,
 })
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    changeParagraph,
-    addSyllable,
-    toggleShowPagination,
-  },
-  dispatch),
+  actions: bindActionCreators(
+    {
+      changeParagraph,
+      addSyllable,
+      toggleShowPagination,
+    },
+    dispatch
+  ),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(InsertText)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InsertText)
 
 InsertText.propTypes = {
   actions: PropTypes.object,
