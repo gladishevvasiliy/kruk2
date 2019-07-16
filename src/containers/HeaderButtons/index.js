@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import PropTypes from 'react-proptypes'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { reduxForm, change as changeFieldValue } from 'redux-form'
+import { get, mapKeys, isNil } from 'lodash'
 import { saveAs } from 'file-saver/FileSaver'
 import { setSyllables } from '../../actions'
+import { getDate } from '../../utils'
 import { Help } from './../index'
 import './style.css'
 
@@ -22,26 +24,55 @@ class HeaderButtons extends Component {
     if (file) {
       new Promise((resolve, reject) => {
         const reader = new FileReader()
-        reader.onload = evt => resolve(evt.target.result)
+        reader.onload = (evt) => resolve(evt.target.result)
         reader.readAsText(file)
         reader.onerror = reject
       })
         .then(this.processFileContent)
-        .catch(err => console.log(err),
-        )
+        .catch((err) => console.log(err)) // eslint-disable-line
     }
   }
 
   processFileContent = (data) => {
     const { actions } = this.props
-    actions.setSyllables(JSON.parse(data))
+    const fileData = JSON.parse(data)
+    if (isNil(fileData.settings)) {
+      actions.setSyllables(fileData)
+      return
+    }
+    mapKeys(fileData.settings, (value, key) => {
+      actions.changeFieldValue('paperStyle', key, value)
+    })
+    actions.setSyllables(fileData.syllables)
   }
 
   downloadFile = () => {
-    const { paper } = this.props
-    const dataToDownload = JSON.stringify(paper.syllables)
-    const blob = new Blob([dataToDownload], { type: 'application/json; charset=utf-8' })
-    saveAs(blob, 'domestikos.json')
+    const { paper, paperStyle } = this.props
+    const {
+      symbolFontSize,
+      textFontSize,
+      marginTop,
+      marginBottom,
+      fontOfTextInSyllables,
+      sizeOfBucvica,
+    } = paperStyle.values
+
+    const file = {
+      syllables: paper.syllables,
+      settings: {
+        symbolFontSize,
+        textFontSize,
+        marginTop,
+        marginBottom,
+        fontOfTextInSyllables,
+        sizeOfBucvica,
+      },
+    }
+    const dataToDownload = JSON.stringify(file)
+    const blob = new Blob([dataToDownload], {
+      type: 'application/json; charset=utf-8',
+    })
+    saveAs(blob, `domestikos-${getDate()}.json`)
   }
 
   toggleModalHelp = () => {
@@ -53,31 +84,53 @@ class HeaderButtons extends Component {
   render() {
     return (
       <React.Fragment>
-        <Help toggle={this.toggleModalHelp} showModalHelp={this.state.showModalHelp} />
+        <Help
+          toggle={this.toggleModalHelp}
+          showModalHelp={this.state.showModalHelp}
+        />
         <div className="import-export">
           <div id="hidden-export-container" style={{ display: 'none' }} />
           <div className="file btn-light btn">
             Загрузить из файла
-            <input className="input-upload" type="file" name="myfile" onChange={e => this.handleFile(e)} />
+            <input
+              className="input-upload"
+              type="file"
+              name="myfile"
+              onChange={(e) => this.handleFile(e)}
+            />
           </div>
-          <button className="btn btn-light button-download" onClick={this.downloadFile}>Экспорт в файл</button>
-          <button className="btn button-help btn-primary button-help" onClick={() => this.toggleModalHelp()}>Помощь</button>
+          <button
+            className="btn btn-light button-download"
+            onClick={this.downloadFile}
+          >
+            Экспорт в файл
+          </button>
+          <button
+            className="btn button-help btn-primary button-help"
+            onClick={() => this.toggleModalHelp()}
+          >
+            Помощь
+          </button>
         </div>
       </React.Fragment>
     )
   }
 }
 
-const mapStateToProps = state => ({
+const HeaderButtonsWithForm = reduxForm({
+  form: 'paperStyle',
+})(HeaderButtons)
+
+const mapStateToProps = (state) => ({
   paper: state.paper,
+  paperStyle: get(state.form, 'paperStyle', {}),
 })
 
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ setSyllables }, dispatch) })
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({ setSyllables, changeFieldValue }, dispatch),
+})
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderButtons)
-
-HeaderButtons.propTypes = {
-  paper: PropTypes.object,
-  actions: PropTypes.object,
-}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HeaderButtonsWithForm)

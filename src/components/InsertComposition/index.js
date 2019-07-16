@@ -1,52 +1,49 @@
 import React, { Component } from 'react'
-import PropTypes from 'react-proptypes'
 import { Field, reduxForm } from 'redux-form'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { filter } from 'lodash'
+import { find } from 'lodash'
 import './style.css'
 
 import { RFReactSelect } from '../../utils'
-import { COMPOSITIONS } from '../../res'
-
-import { addSyllable, createToneList, getCompositions } from '../../actions'
+import { addSyllable, createNamesList, getCompositions } from '../../actions'
 
 class InsertComposition extends Component {
-  changeName = (e) => {
+  changeTone = e => {
     const { actions } = this.props
     actions.getCompositions()
-    actions.createToneList(e.value)
+    actions.createNamesList(e.label)
   }
 
-  changeTone = (e) => {
-    const { actions, compositions } = this.props
-    const symbolsFilteredByPitch = filter(compositions, ({ tone }) => tone === e.label)
-    symbolsFilteredByPitch[0].value.map(item => actions.addSyllable({ value: item, text: '-', type: 'KRUK' }))
+  changeName = e => {
+    const { actions, currentCompositions } = this.props
+    const syllablesForInsert = find(currentCompositions, { _id: e.id }).value
+    syllablesForInsert.map(item =>
+      actions.addSyllable({ value: item, text: '-', type: 'KRUK' })
+    )
   }
 
   render() {
-    const { tones } = this.props
+    const { compositionsNames, compositionsLables } = this.props
     return (
       <div className="insertComposition text-left">
         <h4 className="text-left">Вставить попевку</h4>
-        <div className="field" >
-          <label htmlFor="Name">Название</label>
+        <div className="field">
+          <label htmlFor="Tone">Глас</label>
           <Field
-            name="name"
-            list="compositions"
-            options={COMPOSITIONS}
-            onChange={this.changeName}
+            name="tone"
+            options={compositionsLables}
+            onChange={this.changeTone}
             component={RFReactSelect}
             className="input"
           />
         </div>
-        <div className="field" >
-          <label htmlFor="Name">Глас</label>
+        <div className="field">
+          <label htmlFor="Name">Название</label>
           <Field
-            name="tone"
-            list="tones"
-            options={tones}
-            onChange={this.changeTone}
+            name="name"
+            options={compositionsNames}
+            onChange={this.changeName}
             component={RFReactSelect}
             className="input"
           />
@@ -61,21 +58,29 @@ const InsertCompositionWithForm = reduxForm({
 })(InsertComposition)
 
 const mapStateToProps = state => ({
-  compositions: state.symbols.compositions,
-  tones: state.symbols.tones,
+  compositionsLables: state.symbols.compositions.map(item => ({
+    id: item.tone,
+    label: item.tone,
+  })),
+  currentCompositions: state.symbols.currentCompositions,
+  compositionsNames: state.symbols.compositionsNames.map(item => ({
+    id: item.id,
+    label: item.name,
+  })),
 })
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    addSyllable,
-    createToneList,
-    getCompositions,
-  }, dispatch) })
+  actions: bindActionCreators(
+    {
+      addSyllable,
+      createNamesList,
+      getCompositions,
+    },
+    dispatch
+  ),
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(InsertCompositionWithForm)
-
-InsertComposition.propTypes = {
-  actions: PropTypes.object,
-  compositions: PropTypes.array,
-  tones: PropTypes.array,
-}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InsertCompositionWithForm)
