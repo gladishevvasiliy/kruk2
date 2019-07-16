@@ -1,61 +1,87 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
-import { RangeInput, Select } from '../../utils'
+import { Container, Col, Input, Label, Form, FormGroup } from 'reactstrap'
+import { Select } from '../../utils'
 import { customFonts } from '../../res/index'
 import './style.css'
 
 const PaperStyle = () => (
-  <div className="paperStyle text-left">
+  <Container className="paperStyle text-left">
     <h4>Настройки</h4>
-    <label htmlFor="symbolFontSize">Размер знамен</label>
-    <Field
-      name="symbolFontSize"
-      type="range"
-      className="custom-range"
-      component={RangeInput}
-      id="fontRange"
-      min="30"
-      max="180"
-    />
-    <label htmlFor="textFontSize">Размер текста</label>
-    <Field
-      name="textFontSize"
-      type="range"
-      className="custom-range"
-      component={RangeInput}
-      id="fontRange"
-      min="10"
-      max="80"
-    />
-    <label htmlFor="lineHeight">Отступ текста от знамени</label>
-    <Field
-      name="lineHeight"
-      type="range"
-      className="custom-range"
-      component={RangeInput}
-      id="fontRange"
-      min="1"
-      max="80"
-    />
-    <label htmlFor="fontOfTextInSyllables">Шрифт текста под знаменами</label>
-    <Field
-      name="fontOfTextInSyllables"
-      component={Select}
-      options={customFonts}
-      id="fontOfTextInSyllables"
-    />
-    <label htmlFor="sizeOfBucvica">Размер буквицы</label>
-    <Field
-      name="sizeOfBucvica"
-      type="range"
-      className="custom-range"
-      component={RangeInput}
-      id="sizeOfBucvica"
-      min="50"
-      max="180"
-    />
-  </div>
+    <Form>
+      <FormGroup row>
+        <Col>
+          <Label for="symbolFontSize">Размер знамен</Label>
+          <Input
+            tag={Field}
+            component="input"
+            type="number"
+            name="symbolFontSize"
+            min="30"
+            max="180"
+          />
+        </Col>
+        <Col>
+          <Label for="textFontSize">Размер текста</Label>
+          <Input
+            tag={Field}
+            component="input"
+            type="number"
+            name="textFontSize"
+            min="10"
+            max="80"
+          />
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Col>
+          <Label for="marginTop">Отступ текста от знамени</Label>
+          <Input
+            tag={Field}
+            component="input"
+            type="number"
+            name="marginTop"
+            min="1"
+            max="80"
+          />
+        </Col>
+        <Col>
+          <Label for="marginBottom">Межстрочный интервал</Label>
+          <Input
+            tag={Field}
+            component="input"
+            type="number"
+            name="marginBottom"
+            min="1"
+            max="80"
+          />
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Col>
+          <Label for="fontOfTextInSyllables">Шрифт слогов</Label>
+          <Field
+            name="fontOfTextInSyllables"
+            component={Select}
+            options={customFonts}
+            id="fontOfTextInSyllables"
+          />
+        </Col>
+        <Col>
+          <Label for="sizeOfBucvica">Размер буквицы</Label>
+          <Input
+            tag={Field}
+            component="input"
+            type="number"
+            name="sizeOfBucvica"
+            min="50"
+            max="180"
+          />
+        </Col>
+      </FormGroup>
+    </Form>
+  </Container>
 )
 
 const PaperStyleWithForm = reduxForm({
@@ -64,11 +90,13 @@ const PaperStyleWithForm = reduxForm({
 
 const InitializePaperStyleWithForm = connect(() => ({
   initialValues: {
-    textfontSize: 40,
-    sizeOfBucvica: 72,
-    sizeOfPage: 900,
-    lineHeight: 1,
+    symbolFontSize: 50,
+    textFontSize: 20,
+    marginTop: 10,
+    marginBottom: 14,
     fontOfTextInSyllables: customFonts[0],
+    sizeOfBucvica: 90,
+    sizeOfPage: 900,
   },
 }))(PaperStyleWithForm)
 
