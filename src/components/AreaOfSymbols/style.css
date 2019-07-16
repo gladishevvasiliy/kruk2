@@ -1,23 +1,70 @@
 @font-face {
     font-family: Kruk;
     src: url(../../res/fonts/Kruk-Kalashn-edit-VG.ttf);
-   }
+}
 
-   @font-face {
+@font-face {
     font-family: NewDamaskin;
     src: url(../../res/fonts/NewDamaskin.ttf);
-   }
+}
 
-   @font-face {
+@font-face {
     font-family: Afonit;
     src: url(../../res/fonts/afonit01-red-for-kruk.ttf);
-   }
+}
 
-   @font-face {
+@font-face {
     font-family: GrebnevUCS;
     src: url(../../res/fonts/GrebnevUCS.ttf)
 }
 
+ /* custom fonts */
+
+@font-face {
+    font-family: Damaskin;
+    src: url(../../res/fonts/NewDamaskin.ttf);
+}
+
+@font-face {
+    font-family: GrebnevUCS;
+    src: url(../../res/fonts/GrebnevUCS.ttf);
+}
+
+@font-face {
+    font-family: Turaevo;
+    src: url(../../res/fonts/Turaevo.ttf);
+}
+
+@font-face {
+    font-family: KanonnikUCS;
+    src: url(../../res/fonts/KanonnikUCS.ttf);
+}
+
+@font-face {
+    font-family: KnigopechatnyaUCS;
+    src: url(../../res/fonts/KnigopechatnyaUCS.ttf);
+}
+
+
+.Damaskin-font {
+    font-family: Damaskin;
+}
+
+.GrebnevUCS-font {
+    font-family: GrebnevUCS;
+}
+
+.Turaevo-font {
+    font-family: Turaevo;
+}
+
+.KanonnikUCS-font {
+    font-family: KanonnikUCS;
+}
+
+.KnigopechatnyaUCS-font {
+    font-family: KnigopechatnyaUCS;
+}
 
 .paperArea {
     padding-top: 50px;
@@ -169,9 +216,10 @@
     margin-left: 20px;
     margin-top: 14px;
     text-align: left;
-    font-family: NewDamaskin;
     cursor: pointer;
 }
+
+
 
 .text:hover {
     color:red;
@@ -179,6 +227,7 @@
 
 .symbol {
     font-family: "Kruk";
+    margin-bottom: -10px;
 }
 
 .red {

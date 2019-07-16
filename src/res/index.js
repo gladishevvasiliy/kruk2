@@ -411,3 +411,11 @@ export const KRUKI = [
     label: 'Дуда',
   },
 ]
+
+export const customFonts = [
+  'Damaskin',
+  'GrebnevUCS',
+  'KnigopechatnyaUCS',
+  'Turaevo',
+  'KanonnikUCS',
+]
