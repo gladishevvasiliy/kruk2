@@ -2,7 +2,7 @@ import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { Container, Col, Input, Label, Form, FormGroup } from 'reactstrap'
-import { Select } from '../../utils'
+import { Select, saveFieldDataToLocalStorage } from '../../utils'
 import { customFonts } from '../../res/index'
 import './style.css'
 
@@ -20,6 +20,7 @@ const PaperStyle = () => (
             name="symbolFontSize"
             min="30"
             max="180"
+            onChange={(e) => saveFieldDataToLocalStorage(e)}
           />
         </Col>
         <Col>
@@ -31,6 +32,7 @@ const PaperStyle = () => (
             name="textFontSize"
             min="10"
             max="80"
+            onChange={(e) => saveFieldDataToLocalStorage(e)}
           />
         </Col>
       </FormGroup>
@@ -44,6 +46,7 @@ const PaperStyle = () => (
             name="marginTop"
             min="1"
             max="80"
+            onChange={(e) => saveFieldDataToLocalStorage(e)}
           />
         </Col>
         <Col>
@@ -55,6 +58,7 @@ const PaperStyle = () => (
             name="marginBottom"
             min="1"
             max="80"
+            onChange={(e) => saveFieldDataToLocalStorage(e)}
           />
         </Col>
       </FormGroup>
@@ -66,6 +70,7 @@ const PaperStyle = () => (
             component={Select}
             options={customFonts}
             id="fontOfTextInSyllables"
+            onChange={(e) => saveFieldDataToLocalStorage(e)}
           />
         </Col>
         <Col>
@@ -77,6 +82,7 @@ const PaperStyle = () => (
             name="sizeOfBucvica"
             min="50"
             max="180"
+            onChange={(e) => saveFieldDataToLocalStorage(e)}
           />
         </Col>
       </FormGroup>
@@ -90,12 +96,13 @@ const PaperStyleWithForm = reduxForm({
 
 const InitializePaperStyleWithForm = connect(() => ({
   initialValues: {
-    symbolFontSize: 50,
-    textFontSize: 20,
-    marginTop: 10,
-    marginBottom: 14,
-    fontOfTextInSyllables: customFonts[0],
-    sizeOfBucvica: 90,
+    symbolFontSize: localStorage.getItem('symbolFontSize') || 50,
+    textFontSize: localStorage.getItem('textFontSize') || 20,
+    marginTop: localStorage.getItem('marginTop') || 10,
+    marginBottom: localStorage.getItem('marginBottom') || 14,
+    fontOfTextInSyllables:
+      localStorage.getItem('fontOfTextInSyllables') || customFonts[0],
+    sizeOfBucvica: localStorage.getItem('sizeOfBucvica') || 90,
     sizeOfPage: 900,
   },
 }))(PaperStyleWithForm)

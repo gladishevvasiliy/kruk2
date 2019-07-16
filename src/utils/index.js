@@ -33,3 +33,7 @@ export const getDate = () => {
     today.getDate(),
   ).padStart(2, '0')}.${today.getFullYear()}`
 }
+
+export const saveFieldDataToLocalStorage = (e) => {
+  localStorage.setItem(e.currentTarget.name, e.currentTarget.value)
+}
