@@ -15,7 +15,7 @@ export class PaperWrapper extends Component {
   }
 
   componentDidMount = () => {
-    getDataFromServer('https://84.201.133.135:8443/kruk/all').then(data => {
+    getDataFromServer('https://tranquil-plateau-55628.herokuapp.com/kruk/all').then(data => {
       const { actions } = this.props
       actions.setSymbols(data)
       this.setState({ isLoading: false })
@@ -30,13 +30,13 @@ export class PaperWrapper extends Component {
           className="spinner spinner--steps icon-spinner loading-gif"
           aria-hidden="true"
         />
-        <p className="notice">
+        {/* <p className="notice">
           При первом запуске пройдите по следующему адресу:{' '}
           <a href="https://84.201.133.135:8443/kruk/all">
             https://84.201.133.135:8443/kruk/all
           </a>{' '}
           и добавьте исключение безопасности.
-        </p>
+        </p> */}
       </React.Fragment>
     ) : (
       <Paper />
