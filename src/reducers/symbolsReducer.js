@@ -29,7 +29,7 @@ getDataFromServer('https://tranquil-plateau-55628.herokuapp.com/kruk/all').then(
   initialState.symbols = data
 })
 
-getDataFromServer('https://tranquil-plateau-55628.herokuapp.com/kruk/all').then(data => {
+getDataFromServer('https://tranquil-plateau-55628.herokuapp.com/composition/all').then(data => {
   let i = 1
   const compositionsSortedByTone = [
     { tone: 1, compositions: [] },
