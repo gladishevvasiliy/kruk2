@@ -5,7 +5,7 @@
   "homepage": "https://gladishevvasiliy.github.io/kruk2/",
   "dependencies": {
     "accept-language": "^3.0.17",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-core": "^6.25.0",
     "babel-polyfill": "^6.26.0",
     "blueimp-file-upload": "^9.19.1",
