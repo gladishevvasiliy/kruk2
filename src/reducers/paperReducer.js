@@ -29,6 +29,7 @@ let document = [[]]
 if (!isNil(localStorage.getItem('pages'))) {
   document = JSON.parse(localStorage.getItem('pages'))
 }
+document = document.map((page) => page.filter((paragraph) => paragraph))
 
 const initialState = {
   syllables: document,
