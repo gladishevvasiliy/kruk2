@@ -46,7 +46,7 @@
     "resolve-url-loader": "^2.2.0",
     "rollbar": "^2.2.8",
     "slug": "^0.9.1",
-    "striptags": "3.1.1",
+    "striptags": "3.2.0",
     "universal-cookie-express": "2.1.2",
     "visibilityjs": "^1.2.6",
     "font-awesome": "^4.7.0",
