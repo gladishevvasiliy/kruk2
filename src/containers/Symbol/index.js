@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import './style.css'
 
-class Symbol extends Component { // eslint-disable-line
+class Symbol extends Component {
+  // eslint-disable-line
 
   addSyllable = (value) => {
     const { addSyllable } = this.props
@@ -11,6 +12,11 @@ class Symbol extends Component { // eslint-disable-line
     syllableForInsert.type = 'KRUK'
 
     addSyllable(syllableForInsert)
+  }
+
+  copy = (e) => {
+    e.stopPropagation()
+    navigator.clipboard.writeText(this.props.value)
   }
 
   render() {
@@ -24,9 +30,13 @@ class Symbol extends Component { // eslint-disable-line
           data-html="true"
           title={`${name}, помета: ${pitch}`}
         />
-        <div className="sourceHtml">
-          {value}
-        </div>
+        <div className="sourceHtml">{value}</div>
+        <button
+          className="copy-button btn btn-outline-primary btn-sm"
+          onClick={this.copy}
+        >
+          <i className="icon-copy" />
+        </button>
       </div>
     )
   }

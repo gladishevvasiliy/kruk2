@@ -14,6 +14,7 @@
     width: 280px;
     height: 70px;
     border-radius: .25rem;
+    position: relative;
 }
 
 .previewItem:hover {
@@ -24,4 +25,10 @@
 .sourceHtml{
     font-size: 10px;
     color: hsl(0,0%,50%);
+}
+
+.copy-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
