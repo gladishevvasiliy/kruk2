@@ -15,7 +15,7 @@ export class PaperWrapper extends Component {
   }
 
   componentDidMount = () => {
-    getDataFromServer('https://tranquil-plateau-55628.herokuapp.com/kruk/all').then(data => {
+    getDataFromServer('http://1127153-cy27173.tw1.ru/kruk/all').then(data => {
       const { actions } = this.props
       actions.setSymbols(data)
       this.setState({ isLoading: false })
