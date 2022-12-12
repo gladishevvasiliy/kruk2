@@ -25,11 +25,11 @@ const initialState = {
   compositionsNames: [],
 }
 
-getDataFromServer('http://1127153-cy27173.tw1.ru/kruk/all').then(data => {
+getDataFromServer('https://domestikos.ru/base/kruk/all').then((data) => {
   initialState.symbols = data
 })
 
-getDataFromServer('http://1127153-cy27173.tw1.ru/composition/all').then(data => {
+getDataFromServer('https://domestikos.ru/base/composition/all').then((data) => {
   let i = 1
   const compositionsSortedByTone = [
     { tone: 1, compositions: [] },
@@ -43,26 +43,27 @@ getDataFromServer('http://1127153-cy27173.tw1.ru/composition/all').then(data => 
   ]
   while (i < 9) {
     const typeOfCompositions = clone(data) // this code divides compositions by tones
-    const filteredByTone = typeOfCompositions.map(composition =>
+    const filteredByTone = typeOfCompositions.map((composition) =>
       composition.compositions.filter(
-        subComposition => subComposition.tone.indexOf(i.toString()) !== -1
-      )
+        (subComposition) => subComposition.tone.indexOf(i.toString()) !== -1,
+      ),
     )
 
     const compositionsOfTone = find(compositionsSortedByTone, { tone: i })
-    filteredByTone.forEach(array => {
-      if (!isEmpty(array))
+    filteredByTone.forEach((array) => {
+      if (!isEmpty(array)) {
         compositionsOfTone.compositions = [
           ...compositionsOfTone.compositions,
           ...array,
         ]
+      }
     })
     i += 1
   }
   initialState.compositions = compositionsSortedByTone
 })
 
-const checkError = symbols => {
+const checkError = (symbols) => {
   if (symbols.length === 0) {
     return 'Ошибка. Такого крюка в базе нет.'
   }
@@ -76,7 +77,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         symbols,
-        namesOfSymbols: symbols.map(symbol => ({
+        namesOfSymbols: symbols.map((symbol) => ({
           value: symbol._id,
           label: symbol.name,
         })),
@@ -88,7 +89,7 @@ export default (state = initialState, action) => {
       const currentNameOfSymbol = action.payload
       const symbolsFilteredByName = find(
         symbols,
-        symbol => symbol.name === currentNameOfSymbol
+        (symbol) => symbol.name === currentNameOfSymbol,
       )
 
       return {
@@ -103,9 +104,9 @@ export default (state = initialState, action) => {
       const currentOptionsOfSymbol = action.payload
       const symbolsFilteredByOptions = filter(
         symbolsFilteredByName,
-        symbol =>
+        (symbol) =>
           difference(currentOptionsOfSymbol, symbol.opts).length === 0 &&
-          difference(symbol.opts, currentOptionsOfSymbol).length === 0
+          difference(symbol.opts, currentOptionsOfSymbol).length === 0,
       )
       return {
         ...state,
@@ -120,7 +121,7 @@ export default (state = initialState, action) => {
       const currentPitchOfSymbol = action.payload
       const symbolsFilteredByPitch = filter(
         symbolsFilteredByOptions,
-        ({ pitch }) => pitch === currentPitchOfSymbol
+        ({ pitch }) => pitch === currentPitchOfSymbol,
       ) // eslint-disable-line max-len
 
       return {
@@ -147,12 +148,12 @@ export default (state = initialState, action) => {
       const { symbolsFilteredByName } = state
       let emptyArray = []
       // map array  of symbols, and in everi item add array of opts to emptyArray
-      symbolsFilteredByName.map(symbol => {
+      symbolsFilteredByName.map((symbol) => {
         emptyArray = concat(emptyArray, symbol.opts)
       }) // eslint-disable-line
       const uniqOptions = uniq(emptyArray) // uniq our array of opts
       let index = 0
-      const labels = uniqOptions.map(option => ({
+      const labels = uniqOptions.map((option) => ({
         value: index++,
         label: option,
       })) // eslint-disable-line
@@ -167,12 +168,12 @@ export default (state = initialState, action) => {
       const { currentSymbols } = state
       const choosedSymbols = currentSymbols
       let emptyArray = []
-      choosedSymbols.map(symbol => {
+      choosedSymbols.map((symbol) => {
         emptyArray = concat(emptyArray, symbol.pitch)
       }) // eslint-disable-line
       const uniqOptions = uniq(emptyArray) // uniq our array of opts
       let index = 0
-      const labels = uniqOptions.map(pitch => ({
+      const labels = uniqOptions.map((pitch) => ({
         value: index++,
         label: pitch,
       })) // eslint-disable-line
@@ -187,7 +188,7 @@ export default (state = initialState, action) => {
       const currentTone = action.payload // here we change current compositions
       const compositionsByTone = find(state.compositions, { tone: currentTone })
         .compositions
-      const compositionsNamesList = compositionsByTone.map(composition => ({
+      const compositionsNamesList = compositionsByTone.map((composition) => ({
         name: composition.name,
         id: composition._id,
       }))

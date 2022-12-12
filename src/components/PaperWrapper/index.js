@@ -15,7 +15,7 @@ export class PaperWrapper extends Component {
   }
 
   componentDidMount = () => {
-    getDataFromServer('http://1127153-cy27173.tw1.ru/kruk/all').then(data => {
+    getDataFromServer('https://domestikos.ru/base/kruk/all').then((data) => {
       const { actions } = this.props
       actions.setSymbols(data)
       this.setState({ isLoading: false })
@@ -44,18 +44,18 @@ export class PaperWrapper extends Component {
   }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = (state) => ({})
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(
     {
       setSymbols,
     },
-    dispatch
+    dispatch,
   ),
 })
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PaperWrapper)
