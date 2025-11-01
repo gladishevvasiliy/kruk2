@@ -14,6 +14,7 @@ class HeaderButtons extends Component {
     super(props)
     this.state = {
       showModalHelp: false,
+      redMarksHidden: false,
     }
 
     this.toggleModalHelp = this.toggleModalHelp.bind()
@@ -81,6 +82,28 @@ class HeaderButtons extends Component {
     })
   }
 
+  handleRemoveRedMarks = () => {
+    const { redMarksHidden } = this.state
+    const existingStyle = document.getElementById('hide-red-marks-style')
+
+    if (redMarksHidden) {
+      // Показываем пометы - удаляем стиль
+      if (existingStyle) {
+        existingStyle.remove()
+      }
+      this.setState({ redMarksHidden: false })
+    } else {
+      // Скрываем пометы - добавляем стиль
+      if (!existingStyle) {
+        const style = document.createElement('style')
+        style.id = 'hide-red-marks-style'
+        style.textContent = '.red { color: #ffffff !important; }'
+        document.head.appendChild(style)
+      }
+      this.setState({ redMarksHidden: true })
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -104,6 +127,13 @@ class HeaderButtons extends Component {
             onClick={this.downloadFile}
           >
             Экспорт в файл
+          </button>
+          <button
+            className="btn btn-light button-download"
+            onClick={this.handleRemoveRedMarks}
+            style={{ marginLeft: '10px' }}
+          >
+            {this.state.redMarksHidden ? 'С пометами' : 'Без помет'}
           </button>
           <button
             className="btn button-help btn-primary button-help"
